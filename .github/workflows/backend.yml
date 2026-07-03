@@ -139,16 +139,25 @@ jobs:
           script: sleep 45
 
       - name: Verify Application
-        uses: appleboy/ssh-action@v1.1.0
-        with:
+          uses: appleboy/ssh-action@v1.1.0
+          with:
           host: ${{ secrets.EC2_HOST }}
           username: ec2-user
           key: ${{ secrets.EC2_KEY }}
           script: |
-            HEALTH=$(curl -s http://localhost:8084/actuator/health)
-            echo "$HEALTH"
-            [[ "$HEALTH" == *'"status":"UP"'* ]]
+          STATUS=$(curl -o response.json -s -w "%{http_code}" http://localhost:8084/actuator/health)
 
+          cat response.json
+
+          if [ "$STATUS" != "200" ]; then
+          echo "Health endpoint returned HTTP $STATUS"
+          exit 1
+          fi
+
+          grep -q '"status":"UP"' response.json || exit 1
+      
+          echo "Application is healthy."
+          
       - name: Send Deployment Report
         if: always()
         uses: dawidd6/action-send-mail@v3
