@@ -13,7 +13,7 @@ After=network.target
 User=root
 WorkingDirectory=/root 
 ExecStart=/root/venv/bin/streamlit run app.py --server.port=8501 --server.address=0.0.0.0
-Environment=API_URL=http://34.207.118.241:8084
+Environment=API_URL=http://100.54.144.241:8084
 Restart=always
 RestartSec=5
 
@@ -32,7 +32,7 @@ After=network.target
 User=root
 WorkingDirectory=/root/Java-springboot-project/frontend
 ExecStart=/root/Java-springboot-project/frontend/venv/bin/python -m streamlit run /root/Java-springboot-project/frontend/app.py --server.port=8501 --server.address=0.0.0.0
-Environment=API_URL=http://34.207.118.241:8084
+Environment=API_URL=http://100.54.144.241:8084
 Restart=always
 RestartSec=5
 
